@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Multiplication Grid</title>
+    <style>
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table td {
+            width: 50px;
+            height: 30px;
+            border: solid black 1px;
+            text-align: center;
+        }
+
+        td:nth-child(1),
+        tr:nth-child(1) {
+            background: lightgrey;
+        }
+
+        h1,
+        h3 {
+            text-align: center;
+        }
+
+        #inputDiv {
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        #gridSizeInputBox {
+            font-size: 18px;
+            width: 100px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Multiplication Grid Generator</h1>
+    <h3>"Enter a number between 1 and 15"</h3>
+    <div id="inputDiv"><input id="gridSizeInputBox" type="number" range="15" placeholder="Grid Size" min="1" max="15" onchange="checkForValidInput(this.value)"></div>
+    <br>
+    <section id="tableHolder">
+
+    </section>
+
+    <script>
+        function checkForValidInput(userInput) {
+
+            if (isNaN(userInput) || userInput <=0 || userInput > 15 || userInput == "") {
+
+                    alert("Please enter a number between 1 and 15");
+
+                } else {
+                    createTable(userInput);
+                }
+            }
+
+            function createTable(userInput) {
+
+                var tableHolder = document.getElementById("tableHolder");
+
+                var userGridSize = userInput;
+
+                var table = "<table>";
+
+                for (var i = 0; i <= userGridSize; i++) {
+
+                    //insert a row Element
+                    table += "<tr>";
+
+                    for (var j = 0; j <= userGridSize; j++) {
+                        //add a td element
+                        table += "<td>" + i * j + "</td>";
+                    }
+
+                    table += "</tr>";
+
+                }
+
+                table += "</table>";
+
+                tableHolder.innerHTML = table;
+
+                showBaseNumbers();
+            }
+
+            function showBaseNumbers() {
+
+                var userGridLength = parseInt(document.getElementById("gridSizeInputBox").value);
+
+                var TDArray = [];
+
+                var TDCollection = document.getElementsByTagName("TD");
+
+                for (var i = 0; i < TDCollection.length; i++) {
+                    TDArray.push(TDCollection[i].innerHTML);
+                }
+                //alert(TDArray);
+
+                //Get rid of the first few cells that are showing "0"
+                for (var i = 0; i < (userGridLength + 2); i++) {
+                    TDArray.shift();
+                }
+
+                TDArray.unshift("X");
+                //alert("This is the shifted Array: " + TDArray);
+
+                //Push the appropariate array back into the top Row of the Table Data
+                for (var i = 0; i <= userGridLength; i++) {
+                    TDCollection[i].innerHTML = TDArray[i];
+                }
+
+                //Get new TDCollection
+                var newTDCollection = document.getElementsByTagName("TD");
+
+                var newTDArray = [];
+
+                for (var i = 0; i < newTDCollection.length; i++) {
+                    newTDArray.push(newTDCollection[i].innerHTML);
+                }
+                //alert("This is the newTDArray grabbed from the Table: " + newTDArray);
+
+                //if value of index == 0 then insert the value of index +1 into that space
+
+                for (var i = 0; i < newTDArray.length; i++) {
+                    if (newTDArray[i] == 0) {
+                        //alert("index is" + i);
+                        newTDArray[i] = newTDArray[i + 1];
+                        // alert("new value for" + i + "is now" + newTDArray[i]);
+                    }
+
+                }
+                //alert("This is the complete newTDArray: " + newTDArray);
+                //push the Array back into the TableData
+                for (var i = 0; i < newTDArray.length; i++) {
+                    newTDCollection[i].innerHTML = newTDArray[i];
+                }
+            }
+
+    </script>
+
+</body>
+
+</html>
+
